@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel, create_engine
+from sqlmodel import Field, SQLModel, create_engine, Session
 
 
 class Hero(SQLModel, table=True):
@@ -18,5 +18,24 @@ def create_db_and_tables():
     SQLModel.metadata.create_all(engine)
 
 
-if __name__ == "__main__":
+def create_heroes():
+    heroes = [
+        Hero(name="Deadpond", secret_name="Dive Wilson"),
+        Hero(name="Spider-Boy", secret_name="Pedro Parqueador"),
+        Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48),
+    ]
+
+    session = Session(engine)
+
+    for hero in heroes:
+        session.add(hero)
+    session.commit()
+
+
+def main():
     create_db_and_tables()
+    create_heroes()
+
+
+if __name__ == "__main__":
+    main()
