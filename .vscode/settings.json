@@ -1,7 +1,8 @@
 {
   "[python]": {
     "editor.defaultFormatter": "charliermarsh.ruff",
-    "editor.formatOnSave": true
+    "editor.formatOnSave": true,
+    "editor.rulers": [99]
   },
   "python.analysis.typeCheckingMode": "strict",
   "files.exclude": {
