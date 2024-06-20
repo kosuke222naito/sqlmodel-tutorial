@@ -11,6 +11,8 @@
 -e file:.
 annotated-types==0.7.0
     # via pydantic
+greenlet==3.0.3
+    # via sqlalchemy
 pydantic==2.7.4
     # via sqlmodel
 pydantic-core==2.18.4
