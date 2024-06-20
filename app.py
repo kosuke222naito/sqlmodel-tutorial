@@ -4,7 +4,7 @@ from sqlmodel import Field, SQLModel, create_engine, Session, select
 class Team(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
-    headquaters: str
+    headquarters: str
 
 
 class Hero(SQLModel, table=True):
@@ -27,20 +27,35 @@ def create_db_and_tables():
 
 
 def create_heroes():
-    heroes = [
-        Hero(name="Deadpond", secret_name="Dive Wilson"),
-        Hero(name="Spider-Boy", secret_name="Pedro Parqueador"),
-        Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48),
-        Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32),
-        Hero(name="Black Lion", secret_name="Trevor Challa", age=35),
-        Hero(name="Dr. Weird", secret_name="Steve Weird", age=36),
-        Hero(name="Captain North America", secret_name="Esteban Rogelios", age=93),
-    ]
-
     with Session(engine) as session:
-        for hero in heroes:
-            session.add(hero)
+        team_preventers = Team(name="Preventers", headquarters="Sharp Tower")
+        team_z_force = Team(name="Z-Force", headquarters="Sister Margaret's Bar")
+        session.add(team_preventers)
+        session.add(team_z_force)
         session.commit()
+
+        hero_deadpond = Hero(
+            name="Deadpond", secret_name="Dive Wilson", team_id=team_z_force.id
+        )
+        hero_rusty_man = Hero(
+            name="Rusty-Man",
+            secret_name="Tommy Sharp",
+            age=48,
+            team_id=team_preventers.id,
+        )
+        hero_spider_boy = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
+        session.add(hero_deadpond)
+        session.add(hero_rusty_man)
+        session.add(hero_spider_boy)
+        session.commit()
+
+        session.refresh(hero_deadpond)
+        session.refresh(hero_rusty_man)
+        session.refresh(hero_spider_boy)
+
+        print(f"Created hero: {hero_deadpond}")
+        print(f"Created hero: {hero_rusty_man}")
+        print(f"Created hero: {hero_spider_boy}")
 
 
 def select_heroes():
@@ -101,7 +116,7 @@ def delete_heroes():
 
 def main():
     create_db_and_tables()
-    # create_heroes()
+    create_heroes()
     # select_heroes()
     # update_heroes()
     # delete_heroes()
