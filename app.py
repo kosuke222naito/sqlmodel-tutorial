@@ -1,4 +1,4 @@
-from sqlmodel import Field, SQLModel, create_engine, Session, select
+from sqlmodel import Field, SQLModel, create_engine, Session, select, col, or_
 
 
 class Hero(SQLModel, table=True):
@@ -23,6 +23,10 @@ def create_heroes():
         Hero(name="Deadpond", secret_name="Dive Wilson"),
         Hero(name="Spider-Boy", secret_name="Pedro Parqueador"),
         Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48),
+        Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32),
+        Hero(name="Black Lion", secret_name="Trevor Challa", age=35),
+        Hero(name="Dr. Weird", secret_name="Steve Weird", age=36),
+        Hero(name="Captain North America", secret_name="Esteban Rogelios", age=93),
     ]
 
     with Session(engine) as session:
@@ -33,8 +37,10 @@ def create_heroes():
 
 def select_heroes():
     with Session(engine) as session:
-        heroes = session.exec(select(Hero)).all()
-        print(heroes)
+        statement = select(Hero).where(or_(col(Hero.age) <= 35, col(Hero.age) > 90))
+        results = session.exec(statement)
+        for hero in results:
+            print(hero)
 
 
 def main():
