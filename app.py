@@ -30,6 +30,7 @@ def create_heroes():
     for hero in heroes:
         session.add(hero)
     session.commit()
+    session.close()
 
 
 def main():
