@@ -60,10 +60,11 @@ def create_heroes():
 
 def select_heroes():
     with Session(engine) as session:
-        statement = select(Hero).offset(3).limit(3)
+        # statement = select(Hero, Team).where(Hero.team_id == Team.id)
+        statement = select(Hero, Team).join(Team).where(Team.name == "Preventers")
         results = session.exec(statement)
-        for hero in results:
-            print(hero)
+        for hero, team in results:
+            print(f"Preventer hero: {hero}, Team: {team}")
 
 
 def update_heroes():
@@ -117,7 +118,7 @@ def delete_heroes():
 def main():
     create_db_and_tables()
     create_heroes()
-    # select_heroes()
+    select_heroes()
     # update_heroes()
     # delete_heroes()
 
