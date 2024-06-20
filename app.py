@@ -1,10 +1,12 @@
-from sqlmodel import Field, SQLModel, create_engine, Session, select
+from sqlmodel import Field, SQLModel, create_engine, Session, select, Relationship
 
 
 class Team(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     headquarters: str
+
+    heroes: list["Hero"] = Relationship(back_populates="team")
 
 
 class Hero(SQLModel, table=True):
@@ -14,6 +16,7 @@ class Hero(SQLModel, table=True):
     age: int | None = Field(default=None, index=True)
 
     team_id: int | None = Field(default=None, foreign_key="team.id")
+    team: Team | None = Relationship(back_populates="heroes")
 
 
 sqlite_file_name = "database.db"
@@ -118,7 +121,7 @@ def delete_heroes():
 def main():
     create_db_and_tables()
     create_heroes()
-    select_heroes()
+    # select_heroes()
     # update_heroes()
     # delete_heroes()
 
