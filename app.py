@@ -1,11 +1,19 @@
 from sqlmodel import Field, SQLModel, create_engine, Session, select
 
 
+class Team(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+    headquaters: str
+
+
 class Hero(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
     secret_name: str
     age: int | None = Field(default=None, index=True)
+
+    team_id: int | None = Field(default=None, foreign_key="team.id")
 
 
 sqlite_file_name = "database.db"
@@ -93,10 +101,10 @@ def delete_heroes():
 
 def main():
     create_db_and_tables()
-    create_heroes()
-    select_heroes()
-    update_heroes()
-    delete_heroes()
+    # create_heroes()
+    # select_heroes()
+    # update_heroes()
+    # delete_heroes()
 
 
 if __name__ == "__main__":
