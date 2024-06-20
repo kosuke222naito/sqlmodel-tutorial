@@ -25,12 +25,10 @@ def create_heroes():
         Hero(name="Rusty-Man", secret_name="Tommy Sharp", age=48),
     ]
 
-    session = Session(engine)
-
-    for hero in heroes:
-        session.add(hero)
-    session.commit()
-    session.close()
+    with Session(engine) as session:
+        for hero in heroes:
+            session.add(hero)
+        session.commit()
 
 
 def main():
