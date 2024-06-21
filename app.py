@@ -73,7 +73,7 @@ def create_heroes():
         session.add(team_wakaland)
         session.commit()
         session.refresh(team_wakaland)
-        print(f"Team: {team_wakaland.name}, team_wakaland")
+        print(f"Team: {team_wakaland.name}, {team_wakaland}")
 
 
 def select_heroes():
