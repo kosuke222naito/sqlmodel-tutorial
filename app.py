@@ -96,16 +96,11 @@ def create_heroes():
 
 def select_heroes():
     with Session(engine) as session:
-        statement = select(Hero).where(Hero.name == "Spider-Boy")
+        statement = select(Team).where(Team.name == "Preventers")
         result = session.exec(statement)
-        hero_spider_boy = result.one()
-        print(f"Selcetd: {hero_spider_boy}")
+        team_preventers = result.one()
 
-        statement = select(Team).where(Team.id == hero_spider_boy.team_id)
-        result = session.exec(statement)
-        team = result.first()
-        print(f"{hero_spider_boy.name}'s team: {team}")
-        print(f"{hero_spider_boy.name}'s team again: {hero_spider_boy.team}")
+        print(f"{team_preventers.name} heros: {team_preventers.heroes}")
 
 
 def update_heroes():
