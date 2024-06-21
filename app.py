@@ -96,11 +96,16 @@ def create_heroes():
 
 def select_heroes():
     with Session(engine) as session:
-        # statement = select(Hero, Team).where(Hero.team_id == Team.id)
-        statement = select(Hero, Team).join(Team).where(Team.name == "Preventers")
-        results = session.exec(statement)
-        for hero, team in results:
-            print(f"Preventer hero: {hero}, Team: {team}")
+        statement = select(Hero).where(Hero.name == "Spider-Boy")
+        result = session.exec(statement)
+        hero_spider_boy = result.one()
+        print(f"Selcetd: {hero_spider_boy}")
+
+        statement = select(Team).where(Team.id == hero_spider_boy.team_id)
+        result = session.exec(statement)
+        team = result.first()
+        print(f"{hero_spider_boy.name}'s team: {team}")
+        print(f"{hero_spider_boy.name}'s team again: {hero_spider_boy.team}")
 
 
 def update_heroes():
@@ -154,8 +159,7 @@ def delete_heroes():
 def main():
     create_db_and_tables()
     create_heroes()
-    # select_heroes()
-    # update_heroes()
+    select_heroes()  # update_heroes()
     # delete_heroes()
 
 
