@@ -6,7 +6,7 @@ class Team(SQLModel, table=True):
     name: str = Field(index=True)
     headquarters: str
 
-    heroes: list["Hero"] = Relationship()
+    heroes: list["Hero"] = Relationship(back_populates="team")
 
 
 class Hero(SQLModel, table=True):
@@ -16,7 +16,7 @@ class Hero(SQLModel, table=True):
     age: int | None = Field(default=None, index=True)
 
     team_id: int | None = Field(default=None, foreign_key="team.id")
-    team: Team | None = Relationship()
+    team: Team | None = Relationship(back_populates="heroes")
 
 
 sqlite_file_name = "database.db"
