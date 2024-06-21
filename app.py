@@ -1,6 +1,21 @@
 from sqlmodel import Field, Relationship, Session, SQLModel, create_engine, select
 
 
+class Weapon(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+
+    hero: "Hero" = Relationship(back_populates="weapon")
+
+
+class Power(SQLModel, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    name: str = Field(index=True)
+
+    hero_id: int = Field(foreign_key="hero.id")
+    hero: "Hero" = Relationship(back_populates="powers")
+
+
 class Team(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     name: str = Field(index=True)
@@ -17,6 +32,11 @@ class Hero(SQLModel, table=True):
 
     team_id: int | None = Field(default=None, foreign_key="team.id")
     team: Team | None = Relationship(back_populates="heroes")
+
+    weapon_id: int | None = Field(default=None, foreign_key="weapon.id")
+    weapon: Weapon | None = Relationship(back_populates="hero")
+
+    powers: list["Power"] = Relationship(back_populates="hero")
 
 
 sqlite_file_name = "database.db"
