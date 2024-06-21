@@ -75,6 +75,24 @@ def create_heroes():
         session.refresh(team_wakaland)
         print(f"Team: {team_wakaland.name}, {team_wakaland}")
 
+        hero_tarantula = Hero(name="Tarantula", secret_name="Natalia Roman-on", age=32)
+        hero_dr_weird = Hero(name="Dr. Weird", secret_name="Steve Weird", age=36)
+        hero_cap = Hero(
+            name="Captain North America", secret_name="Esteban Rogelios", age=93
+        )
+
+        team_preventers.heroes.append(hero_tarantula)
+        team_preventers.heroes.append(hero_dr_weird)
+        team_preventers.heroes.append(hero_cap)
+        session.add(team_preventers)
+        session.commit()
+        session.refresh(hero_tarantula)
+        session.refresh(hero_dr_weird)
+        session.refresh(hero_cap)
+        print(f"Preveneters new hero: {hero_tarantula}")
+        print(f"Preveneters new hero: {hero_dr_weird}")
+        print(f"Preveneters new hero: {hero_cap}")
+
 
 def select_heroes():
     with Session(engine) as session:
