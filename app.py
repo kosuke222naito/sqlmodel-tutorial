@@ -63,6 +63,18 @@ def create_heroes():
         session.refresh(hero_spider_boy)
         print(f"Updated hero: {hero_spider_boy}")
 
+        hero_black_lion = Hero(name="Black Lion", secret_name="Trevor Challa", age=35)
+        hero_sure_e = Hero(name="Sure-E", secret_name="Sure-E")
+        team_wakaland = Team(
+            name="Wakaland",
+            headquarters="Wakaland Capital City",
+            heroes=[hero_black_lion, hero_sure_e],
+        )
+        session.add(team_wakaland)
+        session.commit()
+        session.refresh(team_wakaland)
+        print(f"Team: {team_wakaland.name}, team_wakaland")
+
 
 def select_heroes():
     with Session(engine) as session:
