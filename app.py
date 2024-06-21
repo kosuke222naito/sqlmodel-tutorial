@@ -46,9 +46,7 @@ def create_heroes():
         hero_rusty_man = Hero(
             name="Rusty-Man", secret_name="Tommy Sharp", age=48, teams=[team_preventers]
         )
-        hero_spider_boy = Hero(
-            name="Spider-Boy", secret_name="Pedro Parqueador", teams=[team_preventers]
-        )
+        hero_spider_boy = Hero(name="Spider-Boy", secret_name="Pedro Parqueador")
         session.add(hero_deadpond)
         session.add(hero_rusty_man)
         session.add(hero_spider_boy)
@@ -80,36 +78,28 @@ def update_heroes():
         hero_spider_boy = session.exec(
             select(Hero).where(Hero.name == "Spider-Boy")
         ).one()
+        team_z_force = session.exec(select(Team).where(Team.name == "Z-Force")).one()
 
-        preventers_team = session.exec(
-            select(Team).where(Team.name == "Preventers")
-        ).one()
-
-        print("Hero Spider-Boy:", hero_spider_boy)
-        print("Preventers Team:", preventers_team)
-        print("Preventers Team Heroes:", preventers_team.heroes)
-
-        hero_spider_boy.team = None
-
-        print("Spider-Boy without team:", hero_spider_boy)
-
-        print("Preventers Team Heroes again:", preventers_team.heroes)
-
-        session.add(hero_spider_boy)
+        team_z_force.heroes.append(hero_spider_boy)
+        session.add(team_z_force)
         session.commit()
-        print("After committing")
 
-        session.refresh(hero_spider_boy)
-        print("Spider-Boy after commit:", hero_spider_boy)
+        print(f"Updated Spider-Boy's teams: {hero_spider_boy.teams}")
+        print(f"Z-Force hereoes: {team_z_force.heroes}")
 
-        print("Preventers Team Heroes after commit:", preventers_team.heroes)
+        hero_spider_boy.teams.remove(team_z_force)
+        session.add(team_z_force)
+        session.commit()
+
+        print(f"Reverted Z-Force's heroes: {team_z_force.heroes}")
+        print(f"Reverted Spider-Boy's teams: {hero_spider_boy.teams}")
 
 
 def main():
     create_db_and_tables()
     create_heroes()
     # select_heroes()
-    # update_heroes()
+    update_heroes()
 
 
 if __name__ == "__main__":
